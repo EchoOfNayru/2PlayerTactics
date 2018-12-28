@@ -723,6 +723,8 @@ MonoBehaviour:
   currentTarget: {fileID: 0}
   PlayerUnits: []
   EnemyUnits: []
+  walls: 10
+  wall: {fileID: 4568345722440364272, guid: 98255f98dce91f94e8d6e3e6a25d6d60, type: 3}
 --- !u!4 &1180375669
 Transform:
   m_ObjectHideFlags: 0

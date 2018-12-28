@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
 
     public int currentTile;
 
-    int[] toprow = new int[10];
-    int[] botrow = new int[10];
+    int[] toprow;
+    int[] botrow;
 
     public bool isPlayer;
     public Material playerActive, enemyActive, playerInactive, enemyInactive, playerFinished, enemyFinished;
@@ -31,10 +31,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 10; i++)
+        toprow = new int[GridGenerator.instance.width];
+        botrow = new int[GridGenerator.instance.width];
+
+        for (int i = 0; i < GridGenerator.instance.width; i++)
         {
-            toprow[i] = (i * 7) + 6;
-            botrow[i] = (i * 7);
+            toprow[i] = (i * GridGenerator.instance.depth) + (GridGenerator.instance.depth - 1);
+            botrow[i] = (i * GridGenerator.instance.depth);
         }
 
         
@@ -108,36 +111,36 @@ public class Player : MonoBehaviour
                 if (currentTile + (1 * i) - 1 < toprow[currentRow])
                     GridGenerator.instance.tiles[currentTile + (1 * i)].movementColor = 1;
             }
-            if (currentTile - 7 * i >= 0)
+            if (currentTile - GridGenerator.instance.depth * i >= 0)
             {
-                GridGenerator.instance.tiles[currentTile - (7 * i)].movementColor = 1;
+                GridGenerator.instance.tiles[currentTile - (GridGenerator.instance.depth * i)].movementColor = 1;
             }
-            if (currentTile + 7 * i <= GridGenerator.instance.tiles.Length - 1) 
+            if (currentTile + GridGenerator.instance.depth * i <= GridGenerator.instance.tiles.Length - 1) 
             {
-                GridGenerator.instance.tiles[currentTile + (7 * i)].movementColor = 1;
-            }
-
-            if (currentTile + 8 * (i - 1) <= 70 && i > 1 && currentRow + 1 <= toprow.Length - 1)
-            {
-                if (currentTile + 8 <= toprow[currentRow + 1])
-                    GridGenerator.instance.tiles[currentTile + (8 * (i - 1))].movementColor = 1;
+                GridGenerator.instance.tiles[currentTile + (GridGenerator.instance.depth * i)].movementColor = 1;
             }
 
-            if (currentTile + 6 * (i - 1) <= 70 && i > 1 && currentRow + 1 <= toprow.Length - 1)
+            if (currentTile + (GridGenerator.instance.depth + 1) * (i - 1) <= (GridGenerator.instance.width * GridGenerator.instance.width) && i > 1 && currentRow + 1 <= toprow.Length - 1)
             {
-                if (currentTile + 6 >= botrow[currentRow + 1])
-                    GridGenerator.instance.tiles[currentTile + (6 * (i - 1))].movementColor = 1;
+                if (currentTile + (GridGenerator.instance.depth + 1) <= toprow[currentRow + 1])
+                    GridGenerator.instance.tiles[currentTile + ((GridGenerator.instance.depth + 1) * (i - 1))].movementColor = 1;
             }
 
-            if (currentTile - 8 * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
+            if (currentTile + (GridGenerator.instance.depth - 1) * (i - 1) <= (GridGenerator.instance.width * GridGenerator.instance.width) && i > 1 && currentRow + 1 <= toprow.Length - 1)
             {
-                if (currentTile - 8 >= botrow[currentRow - 1])
-                    GridGenerator.instance.tiles[currentTile - (8 * (i - 1))].movementColor = 1;
+                if (currentTile + (GridGenerator.instance.depth - 1) >= botrow[currentRow + 1])
+                    GridGenerator.instance.tiles[currentTile + ((GridGenerator.instance.depth - 1) * (i - 1))].movementColor = 1;
             }
-            if (currentTile - 6 * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
+
+            if (currentTile - (GridGenerator.instance.depth + 1) * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
             {
-                if (currentTile - 6 <= toprow[currentRow - 1])
-                    GridGenerator.instance.tiles[currentTile - (6 * (i - 1))].movementColor = 1;
+                if (currentTile - (GridGenerator.instance.depth + 1) >= botrow[currentRow - 1])
+                    GridGenerator.instance.tiles[currentTile - ((GridGenerator.instance.depth + 1) * (i - 1))].movementColor = 1;
+            }
+            if (currentTile - (GridGenerator.instance.depth - 1) * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
+            {
+                if (currentTile - (GridGenerator.instance.depth - 1) <= toprow[currentRow - 1])
+                    GridGenerator.instance.tiles[currentTile - ((GridGenerator.instance.depth - 1) * (i - 1))].movementColor = 1;
             }
         }
     }
@@ -158,36 +161,36 @@ public class Player : MonoBehaviour
             if (currentTile + (1 * i) - 1 < toprow[currentRow])
                 GridGenerator.instance.tiles[currentTile + (1 * i)].movementColor = 2;
         }
-        if (currentTile - 7 * i >= 0)
+        if (currentTile - GridGenerator.instance.depth * i >= 0)
         {
-            GridGenerator.instance.tiles[currentTile - (7 * i)].movementColor = 2;
+            GridGenerator.instance.tiles[currentTile - (GridGenerator.instance.depth * i)].movementColor = 2;
         }
-        if (currentTile + 7 * i <= GridGenerator.instance.tiles.Length - 1)
+        if (currentTile + GridGenerator.instance.depth * i <= GridGenerator.instance.tiles.Length - 1)
         {
-            GridGenerator.instance.tiles[currentTile + (7 * i)].movementColor = 2;
-        }
-
-        if (currentTile + 8 * (i - 1) <= 70 && i > 1 && currentRow + 1 <= toprow.Length - 2)
-        {
-            if (currentTile + 8 <= toprow[currentRow + 1])
-                GridGenerator.instance.tiles[currentTile + (8 * (i - 1))].movementColor = 2;
+            GridGenerator.instance.tiles[currentTile + (GridGenerator.instance.depth * i)].movementColor = 2;
         }
 
-        if (currentTile + 6 * (i - 1) <= 70 && i > 1 && currentRow + 1 <= toprow.Length - 2)
+        if (currentTile + (GridGenerator.instance.depth + 1) * (i - 1) <= (GridGenerator.instance.width * GridGenerator.instance.width) && i > 1 && currentRow + 1 <= toprow.Length - 2)
         {
-            if (currentTile + 6 >= botrow[currentRow + 1])
-                GridGenerator.instance.tiles[currentTile + (6 * (i - 1))].movementColor = 2;
+            if (currentTile + (GridGenerator.instance.depth + 1) <= toprow[currentRow + 1])
+                GridGenerator.instance.tiles[currentTile + ((GridGenerator.instance.depth + 1) * (i - 1))].movementColor = 2;
+        }
+
+        if (currentTile + (GridGenerator.instance.depth - 1) * (i - 1) <= (GridGenerator.instance.width * GridGenerator.instance.width) && i > 1 && currentRow + 1 <= toprow.Length - 2)
+        {
+            if (currentTile + (GridGenerator.instance.depth - 1) >= botrow[currentRow + 1])
+                GridGenerator.instance.tiles[currentTile + ((GridGenerator.instance.depth - 1) * (i - 1))].movementColor = 2;
         }
      
-        if (currentTile - 8 * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
+        if (currentTile - (GridGenerator.instance.depth + 1) * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
         {
-            if (currentTile - 8 >= botrow[currentRow - 1])
-                GridGenerator.instance.tiles[currentTile - (8 * (i - 1))].movementColor = 2;
+            if (currentTile - (GridGenerator.instance.depth + 1) >= botrow[currentRow - 1])
+                GridGenerator.instance.tiles[currentTile - ((GridGenerator.instance.depth + 1) * (i - 1))].movementColor = 2;
         }
-        if (currentTile - 6 * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
+        if (currentTile - (GridGenerator.instance.depth - 1) * (i - 1) >= 0 && i > 1 && currentRow - 1 >= 0)
         {
-            if (currentTile - 6 <= toprow[currentRow - 1])
-                GridGenerator.instance.tiles[currentTile - (6 * (i - 1))].movementColor = 2;
+            if (currentTile - (GridGenerator.instance.depth - 1) <= toprow[currentRow - 1])
+                GridGenerator.instance.tiles[currentTile - ((GridGenerator.instance.depth - 1) * (i - 1))].movementColor = 2;
         }
     }
 

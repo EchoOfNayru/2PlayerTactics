@@ -30,6 +30,9 @@ public class GridGenerator : MonoBehaviour
 
     bool PlayerTurn;
 
+    public int walls;
+    public GameObject wall;
+
     private void Start()
     {
         if (instance == null)
@@ -40,6 +43,9 @@ public class GridGenerator : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        width = Random.Range(3, 10);
+        depth = Random.Range(3, 10);
 
         tiles = new TileScript[width * depth];
         int tileNum = 0;
@@ -58,14 +64,28 @@ public class GridGenerator : MonoBehaviour
 
         cam.transform.position = new Vector3(width/2, 10, depth/2);
 
+        walls = Random.Range(4, 11);
+
+        for (int i = 0; i < walls; i++)
+        {
+            startPos = Random.Range(0, width * depth);
+            while (tiles[startPos].occupied == true)
+            {
+                startPos = Random.Range(0, width * depth);
+            }
+            GameObject thisWall = Instantiate(wall);
+            thisWall.transform.position = new Vector3(tiles[startPos].transform.position.x, 0.3f, tiles[startPos].transform.position.z);
+            tiles[startPos].occupied = true;
+        }
+
         PlayerUnits = new Player[players];
 
         for (int i = 0; i < players; i++)
         {
-            startPos = Random.Range(0, 36);
+            startPos = Random.Range(0, (width * depth) / 2);
             while (tiles[startPos].occupied == true)
             {
-                startPos = Random.Range(0, 36);
+                startPos = Random.Range(0, (width * depth) / 2);
             }
             GameObject thisPlayer = Instantiate(player);
             thisPlayer.GetComponent<Player>().movement = Random.Range(1, 3); // -----
@@ -90,10 +110,10 @@ public class GridGenerator : MonoBehaviour
 
         for (int i = 0; i < enemies; i++)
         {
-            startPos = Random.Range(36, 70);
+            startPos = Random.Range((width * depth) / 2, (width * depth));
             while (tiles[startPos].occupied == true)
             {
-                startPos = Random.Range(36, 70);
+                startPos = Random.Range((width * depth) / 2, (width * depth));
             }
             GameObject thisPlayer = Instantiate(player);
             thisPlayer.GetComponent<Player>().movement = Random.Range(1, 3); // -----
